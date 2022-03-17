@@ -9,7 +9,7 @@ BUILD_INFO=$(curl -X GET -H "Circle-Token: $CIRCLECI_TOKEN" -H "Content-type: ap
 FAILED_STEP=$(echo $BUILD_INFO | jq '.steps | .[] | flatten | map(select(.status? == "failed")) | .[] | {allocation_id, step, name}')
 STEP=$(echo "${FAILED_STEP}" | jq -r ".step") && echo 'export STEP=$(echo "${FAILED_STEP}" | jq -r ".step")' >> $BASH_ENV
 NAME=$(echo "${FAILED_STEP}" | jq -r ".name") && echo 'export NAME=$(echo "${FAILED_STEP}" | jq -r ".name")' >> $BASH_ENV
-COMMITTER_NAME=$(echo "${FAILED_STEP}" | tail -n23 | grep committer_name | cut -f2- -d: | cut -d\" -f2) && 'export COMMITTER_NAME=$(echo "${FAILED_STEP}" | tail -n23 | grep committer_name | cut -f2- -d: | cut -d\" -f2)' >> $BASH_ENV
+COMMITTER_NAME=$(echo "${FAILED_STEP}" | tail -n23 | grep committer_name | cut -f2- -d: | cut -d\" -f2) && echo 'export COMMITTER_NAME=$(echo "${FAILED_STEP}" | tail -n23 | grep committer_name | cut -f2- -d: | cut -d\" -f2)' >> $BASH_ENV
 
 echo $COMMITTER_NAME >> envars.txt
 echo $STEP  >> envars.txt
