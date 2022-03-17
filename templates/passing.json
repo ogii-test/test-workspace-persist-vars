@@ -1,0 +1,25 @@
+{
+   "text":"",
+   "blocks":[
+      {
+         "type":"section",
+         "text":{
+            "type":"mrkdwn",
+            "text":"❌ *Failure* #${CIRCLE_BUILD_NUM} `${CIRCLE_PROJECT_REPONAME}`,  `${CIRCLE_JOB}` executed by `${CIRCLE_USERNAME}`, Step name: `${NAME}`, `${COMMITTER_NAME}`"
+         }
+      },
+      {
+         "type":"actions",
+         "elements":[
+            {
+               "type":"button",
+               "text":{
+                  "type":"plain_text",
+                  "text":"View Job"
+               },
+               "url":"${CIRCLE_BUILD_URL}"
+            }
+         ]
+      }
+   ]
+}
