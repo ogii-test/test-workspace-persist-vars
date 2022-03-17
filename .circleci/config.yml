@@ -6,7 +6,7 @@ orbs:
 
 commands:
   setvalues:
-    steps:
+    steps: 
       - run: 
           command: |
             sudo chmod +x generate_vars.sh
