@@ -68,12 +68,16 @@ slack-fail-post-step: &slack-fail-post-step
 
 jobs:
   deploy:
+    parameters:
+      pass:
+        type: integer
+        default: 0
     docker:
-      - image: 'cimg/base:stable'
+      - image: 'cimg/base:stablcire'
     steps:
       - checkout
       - run: echo "deploy my app"
-      - run: exit 0
+      - run: exit <<parameters.pass>>
 
   deploy2:
     docker:
@@ -86,10 +90,12 @@ workflows:
   deploy:
     jobs:
       - deploy:
+          pass: 0
           <<: *slack-fail-post-step
           context:
             - slack-secrets
-      #- deploy2:
+      - deploy:
+          pass: 1
           #<<: *slack-fail-post-step
           #context:
             #- slack-secrets
