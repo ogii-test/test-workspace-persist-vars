@@ -11,3 +11,5 @@ There are three additional files:
 The script will run after all other steps and before the Slack notify step. This will allow it to pick up a failed step.
 
 Currently this will only handle one failed step. If a single job contains more than one failed steps, it may not correctly work.
+
+You will also need to set your Slack credentials in a context or project level environment variable.
