@@ -44,10 +44,6 @@ slack-notification-post-step-2: &slack-notification-post-step-job2
   post-steps:
      - setvalues
      - setslacktemplates
-     - persist_to_workspace:
-        root: ./
-        paths:
-          - envars.txt
      - slacknotifysteps
 
 jobs:
@@ -65,7 +61,7 @@ jobs:
       - checkout
       - attach_workspace:
           at: .
-      - run: cat envars.txt
+      - run: cat envars.txt #verify content in workspace file
 
 workflows:
   deploy:
