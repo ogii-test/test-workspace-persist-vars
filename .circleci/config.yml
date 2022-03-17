@@ -16,11 +16,11 @@ commands:
   setslacktemplates:
     steps:
       - run:
-        command: |
-          # import slack templates
-          echo 'export SLACK_TEMPLATE_PASS=$(cat ./templates/passing.json)' | sudo tee -a $BASH_ENV
-          echo 'export SLACK_TEMPLATE_FAIL=$(cat ./templates/failing.json)' | sudo tee -a $BASH_ENV
-        when: always
+          command: |
+            # import slack templates
+            echo 'export SLACK_TEMPLATE_PASS=$(cat ./templates/passing.json)' | sudo tee -a $BASH_ENV
+            echo 'export SLACK_TEMPLATE_FAIL=$(cat ./templates/failing.json)' | sudo tee -a $BASH_ENV
+          when: always
 
 slack-notification-post-step: &slack-notification-post-step-job1
   post-steps:
