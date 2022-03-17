@@ -34,7 +34,7 @@ slack-fail-post-step: &slack-fail-post-step
                 "type": "section",
                 "text": {
                   "type": "mrkdwn",
-                  "text": "❌ *Failure* #${CIRCLE_BUILD_NUM} `${CIRCLE_PROJECT_REPONAME}` ,  `${CIRCLE_JOB}` executed by `${CIRCLE_USERNAME}`, name: `${NAME}`, `${COMMITTER_NAME}`"
+                  "text": "❌ *Failure* #${CIRCLE_BUILD_NUM} `${CIRCLE_PROJECT_REPONAME}`,  `${CIRCLE_JOB}` executed by `${CIRCLE_USERNAME}`, Step name: `${NAME}`, `${COMMITTER_NAME}`"
                 }
               },
               {
