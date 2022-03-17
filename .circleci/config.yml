@@ -13,16 +13,19 @@ commands:
             sudo chmod +x generate_vars.sh
             ./generate_vars.sh
           when: always
-
-slack-notification-post-step: &slack-fail-post-step
-  post-steps:
-     - setvalues
-     - run:
+  setslacktemplates:
+    steps:
+      - run:
         command: |
           # import slack templates
           echo 'export SLACK_TEMPLATE_PASS=$(cat ./templates/passing.json)' | sudo tee -a $BASH_ENV
           echo 'export SLACK_TEMPLATE_FAIL=$(cat ./templates/failing.json)' | sudo tee -a $BASH_ENV
         when: always
+
+slack-notification-post-step: &slack-notification-post-step
+  post-steps:
+     - setvalues
+     - setslacktemplates
      - persist_to_workspace:
         root: ./
         paths:
@@ -30,8 +33,6 @@ slack-notification-post-step: &slack-fail-post-step
      - slack/notify:
         template: SLACK_TEMPLATE_FAIL
         event: fail
-        debug: true
-
      - slack/notify:
         template: SLACK_TEMPLATE_PASS
         event: pass
@@ -57,9 +58,10 @@ workflows:
   deploy:
     jobs:
       - job1:
-          <<: *slack-fail-post-step
+          <<: *slack-notification-post-step-job1
           context:
             - slack-secrets
       - job2:
+          <<: *slack-notification-post-step-job2
           requires:
             - job1
