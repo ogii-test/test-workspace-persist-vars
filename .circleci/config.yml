@@ -16,6 +16,9 @@ commands:
 slack-fail-post-step: &slack-fail-post-step
   post-steps:
      - setvalues
+     - run: |
+        echo $NAME
+        echo $COMMITTER_NAME
      - persist_to_workspace:
         root: ./
         paths:
