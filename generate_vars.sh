@@ -3,7 +3,8 @@
 sleep 5s
 API_URL="gh/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/$CIRCLE_BUILD_NUM"
 echo $API_URL
-FAILED_STEP=$(curl -X GET -H "Circle-Token: $CIRCLECI_TOKEN" -H "Content-type: application/json" 'https://circleci.com/api/v1.1/project/${API_URL}'| jq '.steps | .[] | flatten | map(select(.status? == "failed")) | .[] | {allocation_id, step, name}')
+FAILED_STEP=$(curl -X GET -H "Circle-Token: $CIRCLECI_TOKEN" -H "Content-type: application/json" 'https://circleci.com/api/v1.1/project/${API_URL}')
+#| jq '.steps | .[] | flatten | map(select(.status? == "failed")) | .[] | {allocation_id, step, name}'
 #FAILED_STEP=$(curl "?circle-token=${CIRCLE_API_TOKEN}" | jq '.steps | .[] | flatten | map(select(.status? == "failed")) | .[] | {allocation_id, step, name}')
 #echo 'export THE_FAILED_STEP=$FAILED_STEP' >> $BASH_ENV
 #echo 'export ALLOCATION_ID=$(echo "${FAILED_STEP}" | jq -r ".allocation_id")' >> $BASH_ENV
