@@ -48,6 +48,7 @@ slack-fail-post-step: &slack-fail-post-step
             ]
           }
         event: fail
+        debug: true
 
      - slack/notify:
           custom: |
