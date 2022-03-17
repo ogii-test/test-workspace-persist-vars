@@ -13,7 +13,7 @@ commands:
             sudo chmod +x generate_vars.sh
             ./generate_vars.sh
           when: always
-  setslacktemplates:
+  importslacktemplates:
     steps:
       - run:
           command: |
@@ -33,7 +33,7 @@ commands:
 slack-notification-post-step-1: &slack-notification-post-step-job1
   post-steps:
      - setvalues
-     - setslacktemplates
+     - importslacktemplates
      - persist_to_workspace:
         root: ./
         paths:
@@ -43,7 +43,7 @@ slack-notification-post-step-1: &slack-notification-post-step-job1
 slack-notification-post-step-2: &slack-notification-post-step-job2
   post-steps:
      - setvalues
-     - setslacktemplates
+     - importslacktemplates
      - slacknotifysteps
 
 jobs:
@@ -53,7 +53,7 @@ jobs:
     steps:
       - checkout
       # change this to 0 to make the step pass
-      - run: exit 0
+      - run: exit 1
   job2:
     docker:
       - image: 'cimg/base:stable'
