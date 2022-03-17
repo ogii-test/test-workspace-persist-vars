@@ -18,8 +18,8 @@ slack-fail-post-step: &slack-fail-post-step
      - setvalues
      - run:
         command: |
-          echo 'export SLACK_TEMPLATE_PASS=$(cat ./templates/passing.json)' >> $BASH_ENV
-          echo 'export SLACK_TEMPLATE_FAIL=$(cat ./templates/failing.json)' >> $BASH_ENV
+          echo 'export SLACK_TEMPLATE_PASS=$(cat ./templates/passing.json)' | sudo tee -a $BASH_ENV
+          echo 'export SLACK_TEMPLATE_FAIL=$(cat ./templates/failing.json)' | sudo tee -a $BASH_ENV
         when: always
      - persist_to_workspace:
         root: ./
