@@ -16,8 +16,8 @@ echo 'export API_URL=$(echo $CIRCLE_BUILD_URL | cut -d/ -f4-7)' >> $BASH_ENV
 #echo $CIRCLE_API_TOKEN  >> envars.txt
 #echo $ALLOCATION_ID  >> envars.txt
 echo $FAILED_STEP  >> envars.txt
-#echo $STEP  >> envars.txt
-#echo $NAME  >> envars.txt
-#echo $THE_FAILED_STEP  >> envars.txt
+echo $STEP  >> envars.txt
+echo $NAME  >> envars.txt
+echo $THE_FAILED_STEP  >> envars.txt
 cat envars.txt
  
