@@ -1,5 +1,6 @@
 #!/bin/bash
 #Script to generate vars to be used in Slack notifications
+#Currently if no step fails, these vars will be blank: FAILED_STEP, NAME
 
 API_URL="gh/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/$CIRCLE_BUILD_NUM"
 
