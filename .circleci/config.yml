@@ -21,8 +21,16 @@ commands:
             echo 'export SLACK_TEMPLATE_PASS=$(cat ./templates/passing.json)' | sudo tee -a $BASH_ENV
             echo 'export SLACK_TEMPLATE_FAIL=$(cat ./templates/failing.json)' | sudo tee -a $BASH_ENV
           when: always
+  slacknotifysteps:
+    steps:
+     - slack/notify:
+          template: SLACK_TEMPLATE_FAIL
+          event: fail
+     - slack/notify:
+          template: SLACK_TEMPLATE_PASS
+          event: pass
 
-slack-notification-post-step: &slack-notification-post-step-job1
+slack-notification-post-step-1: &slack-notification-post-step-job1
   post-steps:
      - setvalues
      - setslacktemplates
@@ -30,12 +38,17 @@ slack-notification-post-step: &slack-notification-post-step-job1
         root: ./
         paths:
           - envars.txt
-     - slack/notify:
-        template: SLACK_TEMPLATE_FAIL
-        event: fail
-     - slack/notify:
-        template: SLACK_TEMPLATE_PASS
-        event: pass
+     - slacknotifysteps
+     
+slack-notification-post-step-2: &slack-notification-post-step-job2
+  post-steps:
+     - setvalues
+     - setslacktemplates
+     - persist_to_workspace:
+        root: ./
+        paths:
+          - envars.txt
+     - slacknotifysteps
 
 jobs:
   job1:
@@ -62,6 +75,6 @@ workflows:
           context:
             - slack-secrets
       - job2:
-          <<: *slack-notification-post-step-job1
+          <<: *slack-notification-post-step-job2
           requires:
             - job1
