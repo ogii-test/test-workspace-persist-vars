@@ -22,7 +22,7 @@ commands:
           echo 'export SLACK_TEMPLATE_FAIL=$(cat ./templates/failing.json)' | sudo tee -a $BASH_ENV
         when: always
 
-slack-notification-post-step: &slack-notification-post-step
+slack-notification-post-step: &slack-notification-post-step-job1
   post-steps:
      - setvalues
      - setslacktemplates
@@ -62,6 +62,6 @@ workflows:
           context:
             - slack-secrets
       - job2:
-          <<: *slack-notification-post-step-job2
+          <<: *slack-notification-post-step-job1
           requires:
             - job1
