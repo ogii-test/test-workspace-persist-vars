@@ -93,5 +93,9 @@ workflows:
     jobs:
       - deploy:
           <<: *slack-fail-post-step
+          context:
+            - slack-secrets
       - deploy2:
           <<: *slack-fail-post-step
+          context:
+            - slack-secrets
