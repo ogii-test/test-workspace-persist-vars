@@ -73,7 +73,7 @@ jobs:
         type: integer
         default: 0
     docker:
-      - image: 'cimg/base:stablcire'
+      - image: 'cimg/base:stable'
     steps:
       - checkout
       - run: echo "deploy my app"
