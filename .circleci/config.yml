@@ -9,6 +9,7 @@ commands:
     steps: 
       - run: 
           command: |
+            # run script to set environment values
             sudo chmod +x generate_vars.sh
             ./generate_vars.sh
           when: always
@@ -18,6 +19,7 @@ slack-notification-post-step: &slack-fail-post-step
      - setvalues
      - run:
         command: |
+          # import slack templates
           echo 'export SLACK_TEMPLATE_PASS=$(cat ./templates/passing.json)' | sudo tee -a $BASH_ENV
           echo 'export SLACK_TEMPLATE_FAIL=$(cat ./templates/failing.json)' | sudo tee -a $BASH_ENV
         when: always
@@ -36,15 +38,12 @@ slack-notification-post-step: &slack-fail-post-step
 
 jobs:
   job1:
-    parameters:
-      pass:
-        type: integer
-        default: 0
     docker:
       - image: 'cimg/base:stable'
     steps:
       - checkout
-      - run: exit <<parameters.pass>>
+      # change this to 0 to make the step pass
+      - run: exit 1
   job2:
     docker:
       - image: 'cimg/base:stable'
@@ -62,11 +61,6 @@ workflows:
           <<: *slack-fail-post-step
           context:
             - slack-secrets
-      #- deploy:
-          #pass: 1
-          #<<: *slack-fail-post-step
-          #context:
-            #- slack-secrets
       - job2:
           requires:
             - job1
