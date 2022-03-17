@@ -1,15 +1,97 @@
 version: 2.1
 
-jobs:
-  build:
-    docker:
-      - image: cimg/base:2021.07
+orbs:
+  slack: circleci/slack@4.6.2
+  jira: circleci/jira@1.0.6
+
+commands:
+  setvalues:
     steps:
-      - checkout
-      - run: echo "test"
+      - run: 
+         command: |
+          API_URL=$(echo $CIRCLE_BUILD_URL | cut -d/ -f4-7)
+          FAILED_STEP=$(curl "https://circleci.com/api/v1.1/project/${API_URL}?circle-token=${CIRCLE_API_TOKEN}" | jq '.steps | .[] | flatten | map(select(.status? == "failed")) | .[] | {allocation_id, step, name}')
+          echo 'export THE_FAILED_STEP=$FAILED_STEP' | sudo tee -a $BASH_ENV
+          echo 'export ALLOCATION_ID=$(echo "${FAILED_STEP}" | jq -r ".allocation_id")' | sudo tee -a $BASH_ENV
+          echo 'export STEP=$(echo "${FAILED_STEP}" | jq -r ".step")' | sudo tee -a $BASH_ENV
+          echo 'export NAME=$(echo "${FAILED_STEP}" | jq -r ".name")' | sudo tee -a $BASH_ENV
+          echo 'export API_URL=$(echo $CIRCLE_BUILD_URL | cut -d/ -f4-7)' | sudo tee -a $BASH_ENV
+          echo 'export COMMITTER_NAME=$( curl "https://circleci.com/api/v1.1/project/${API_URL}?circle-token=${CIRCLE_API_TOKEN}" | tail -n23 | grep committer_name | cut -f2- -d: | grep -o -P "(?<=\").*(?=\")")' | sudo tee -a $BASH_ENV
+          echo $COMMITTER_NAME
+          echo $CIRCLE_API_TOKEN
+          echo $ALLOCATION_ID
+          echo $FAILED_STEP
+          echo $STEP
+          echo $NAME
+          echo $THE_FAILED_STEP
+
+slack-fail-post-step: &slack-fail-post-step
+  post-steps:
+     - slack/notify:
+        custom: |
+          {
+            "text": "",
+            "blocks": [
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "❌ *Failure* #${CIRCLE_BUILD_NUM} `${CIRCLE_PROJECT_REPONAME}` ,  `${CIRCLE_JOB}` executed by `${CIRCLE_USERNAME}`, name: `${NAME}`, `${COMMITTER_NAME}`"
+                }
+              },
+              {
+                "type": "actions",
+                "elements": [
+                  {
+                    "type": "button",
+                    "text": {
+                      "type": "plain_text",
+                      "text": "View Job"
+                    },
+                    "url": "${CIRCLE_BUILD_URL}"
+                  }
+                ]
+              }
+            ]
+          }
+        event: fail
+
+     - slack/notify:
+          custom: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "✅ *Success* #${CIRCLE_BUILD_NUM}"         
+                    }
+                  ]
+                }
+              ]
+            }
+          event: pass
+
+jobs:
+  deploy:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - run: echo "deploy my app"
+      - setvalues
+  deploy2:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - run: echo "deploy my app"
+      - run: cat hello
+      - setvalues
 
 workflows:
-  workflow1:
+  deploy:
     jobs:
-      - build
- 
+      - deploy:
+          <<: *slack-fail-post-step
+      - deploy2:
+          <<: *slack-fail-post-step
