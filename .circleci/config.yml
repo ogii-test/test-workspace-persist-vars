@@ -96,6 +96,6 @@ workflows:
             - slack-secrets
       - deploy:
           pass: 1
-          #<<: *slack-fail-post-step
-          #context:
-            #- slack-secrets
+          <<: *slack-fail-post-step
+          context:
+            - slack-secrets
