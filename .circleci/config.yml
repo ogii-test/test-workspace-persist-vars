@@ -41,18 +41,11 @@ jobs:
         type: integer
         default: 0
     docker:
-      - image: 'cimg/base:stable'
+      - image: 'cimg/base:edge'
     steps:
       - checkout
       - run: echo "deploy my app"
       - run: exit <<parameters.pass>>
-
-  deploy2:
-    docker:
-      - image: 'cimg/base:stable'
-    steps:
-      - run: echo "deploy my app"
-      - run: cat hello
 
 workflows:
   deploy:
