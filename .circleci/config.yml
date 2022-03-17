@@ -13,7 +13,7 @@ commands:
             ./generate_vars.sh
           when: always
 
-slack-fail-post-step: &slack-fail-post-step
+slack-notification-post-step: &slack-fail-post-step
   post-steps:
      - setvalues
      - run:
@@ -41,11 +41,18 @@ jobs:
         type: integer
         default: 0
     docker:
-      - image: 'cimg/base:edge'
+      - image: 'cimg/base:stable'
     steps:
       - checkout
-      - run: echo "deploy my app"
       - run: exit <<parameters.pass>>
+  job2:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run: cat envars.txt
 
 workflows:
   deploy:
@@ -55,8 +62,11 @@ workflows:
           <<: *slack-fail-post-step
           context:
             - slack-secrets
-      - deploy:
-          pass: 1
-          <<: *slack-fail-post-step
-          context:
-            - slack-secrets
+      #- deploy:
+          #pass: 1
+          #<<: *slack-fail-post-step
+          #context:
+            #- slack-secrets
+      - job2:
+          requires:
+            - build
