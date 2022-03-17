@@ -67,6 +67,7 @@ jobs:
     steps:
       - checkout
       - run: echo "deploy my app"
+      - run: exit 1
       - setvalues
   deploy2:
     docker:
