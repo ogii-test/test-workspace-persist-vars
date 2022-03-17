@@ -20,6 +20,8 @@ slack-fail-post-step: &slack-fail-post-step
         root: ./
         paths:
           - envars.txt
+     - run: echo "test"
+      
      - slack/notify:
         custom: |
           {
