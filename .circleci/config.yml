@@ -8,9 +8,10 @@ commands:
   setvalues:
     steps:
       - run: 
-         command: |
-          sudo chmod +x generate_vars.sh
-          ./generate_vars.sh
+        command: |
+        sudo chmod +x generate_vars.sh
+        ./generate_vars.sh
+        when: always
 
 slack-fail-post-step: &slack-fail-post-step
   post-steps:
