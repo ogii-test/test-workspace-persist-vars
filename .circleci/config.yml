@@ -15,6 +15,7 @@ commands:
 
 slack-fail-post-step: &slack-fail-post-step
   post-steps:
+     - setvalues
      - slack/notify:
         custom: |
           {
@@ -73,14 +74,12 @@ jobs:
           command: |
             exit 1
           when: always
-      - setvalues
   deploy2:
     docker:
       - image: 'cimg/base:stable'
     steps:
       - run: echo "deploy my app"
       - run: cat hello
-      - setvalues
 
 workflows:
   deploy:
