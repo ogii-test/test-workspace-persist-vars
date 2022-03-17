@@ -12,4 +12,4 @@ The script will run after all other steps and before the Slack notify step. This
 
 Currently this will only handle one failed step. If a single job contains more than one failed steps, it may not correctly work.
 
-You will also need to set your Slack credentials in a context or project level environment variable.
+You will also need to set your Slack credentials in a context or project level environment variable, as well as a project or user api token.
