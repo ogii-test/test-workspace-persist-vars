@@ -16,6 +16,10 @@ commands:
 slack-fail-post-step: &slack-fail-post-step
   post-steps:
      - setvalues
+     - persist_to_workspace:
+        root: ./
+        paths:
+          - envars.txt
      - slack/notify:
         custom: |
           {
