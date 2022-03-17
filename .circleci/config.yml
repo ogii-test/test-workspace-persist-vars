@@ -72,5 +72,7 @@ workflows:
             - slack-secrets
       - job2:
           <<: *slack-notification-post-step-job2
+          context:
+            - slack-secrets
           requires:
             - job1
