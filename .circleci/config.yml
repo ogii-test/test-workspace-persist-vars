@@ -9,7 +9,7 @@ commands:
     steps:
       - run: 
          command: |
-          chmod +x generate_vars.sh & ./generate_vars.sh
+          chmod +x generate_vars.sh & generate_vars.sh
 
 slack-fail-post-step: &slack-fail-post-step
   post-steps:
