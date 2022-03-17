@@ -19,3 +19,4 @@ FAILED_STEP=$(curl -X GET -H "Circle-Token: $CIRCLECI_TOKEN" -H "Content-type: a
 #echo $NAME  >> envars.txt
 #echo $THE_FAILED_STEP  >> envars.txt
 cat envars.txt
+ 
