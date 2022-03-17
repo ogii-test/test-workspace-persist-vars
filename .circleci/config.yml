@@ -20,8 +20,6 @@ slack-fail-post-step: &slack-fail-post-step
         root: ./
         paths:
           - envars.txt
-     - run: echo "test"
-      
      - slack/notify:
         custom: |
           {
@@ -75,7 +73,7 @@ jobs:
     steps:
       - checkout
       - run: echo "deploy my app"
-      - run: exit 1
+      - run: exit 0
 
   deploy2:
     docker:
