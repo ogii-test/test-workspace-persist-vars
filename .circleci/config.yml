@@ -9,7 +9,7 @@ commands:
     steps:
       - run: 
          command: |
-          chmod +x generate_vars.sh & generate_vars.sh
+          chmod +x generate_vars.sh & ./generate_vars.sh
 
 slack-fail-post-step: &slack-fail-post-step
   post-steps:
@@ -64,6 +64,7 @@ jobs:
     docker:
       - image: 'cimg/base:stable'
     steps:
+      - checkout
       - run: echo "deploy my app"
       - setvalues
   deploy2:
