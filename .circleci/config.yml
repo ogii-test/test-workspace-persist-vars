@@ -35,7 +35,7 @@ slack-notification-post-step: &slack-fail-post-step
         event: pass
 
 jobs:
-  deploy:
+  job1:
     parameters:
       pass:
         type: integer
@@ -57,7 +57,7 @@ jobs:
 workflows:
   deploy:
     jobs:
-      - deploy:
+      - job1:
           pass: 0
           <<: *slack-fail-post-step
           context:
@@ -69,4 +69,4 @@ workflows:
             #- slack-secrets
       - job2:
           requires:
-            - build
+            - job1
