@@ -70,10 +70,7 @@ jobs:
       - checkout
       - run: echo "deploy my app"
       - run: exit 1
-      - run:
-          command: |
-            exit 1
-          when: always
+
   deploy2:
     docker:
       - image: 'cimg/base:stable'
