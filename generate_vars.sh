@@ -5,7 +5,7 @@ API_URL="gh/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/$CIRCLE_BUILD_NUM"
 
 sleep 1s
 
-BUILD_INFO=$(curl -X GET -H "Circle-Token: $CIRCLECI_TOKEN" -H "Content-type: application/json" "https://circleci.com/api/v1.1/project/${API_URL}")
+BUILD_INFO=$(curl -X GET -H "Circle-Token: $CIRCLECI_TOKEN" -H "Content-type: application/json" "https://circleci.com/api/v1.1/project/${API_URL}" | jq)
 #FAILED_STEP BUILD_INFO=$(curl -X GET -H "Circle-Token: $CIRCLECI_TOKEN" -H "Content-type: application/json" "https://circleci.com/api/v1.1/project/${API_URL}" | jq '.steps | .[] | flatten | map(select(.status? == "failed")) | .[] | {allocation_id, step, name}')
 FAILED_STEP=$BUILD_INFO | jq '.steps | .[] | flatten | map(select(.status? == "failed")) | .[] | {allocation_id, step, name}'
 echo $BUILD_INFO
