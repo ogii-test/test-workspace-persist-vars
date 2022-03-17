@@ -57,7 +57,7 @@ jobs:
     steps:
       - checkout
       # change this to 0 to make the step pass
-      - run: exit 1
+      - run: exit 0
   job2:
     docker:
       - image: 'cimg/base:stable'
