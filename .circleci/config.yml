@@ -18,59 +18,23 @@ slack-fail-post-step: &slack-fail-post-step
      - setvalues
      - run:
         command: |
-          echo $NAME
-          echo $COMMITTER_NAME
+          echo 'export SLACK_TEMPLATE_PASS=$(cat
+            ./templates/passing.json)' >> $BASH_ENV
+          echo 'export SLACK_TEMPLATE_FAIL=$(cat
+            ./templates/failing.json)' >> $BASH_ENV
         when: always
      - persist_to_workspace:
         root: ./
         paths:
           - envars.txt
      - slack/notify:
-        custom: |
-          {
-            "text": "",
-            "blocks": [
-              {
-                "type": "section",
-                "text": {
-                  "type": "mrkdwn",
-                  "text": "❌ *Failure* #${CIRCLE_BUILD_NUM} `${CIRCLE_PROJECT_REPONAME}`,  `${CIRCLE_JOB}` executed by `${CIRCLE_USERNAME}`, Step name: `${NAME}`, `${COMMITTER_NAME}`"
-                }
-              },
-              {
-                "type": "actions",
-                "elements": [
-                  {
-                    "type": "button",
-                    "text": {
-                      "type": "plain_text",
-                      "text": "View Job"
-                    },
-                    "url": "${CIRCLE_BUILD_URL}"
-                  }
-                ]
-              }
-            ]
-          }
+        template: SLACK_TEMPLATE_FAIL
         event: fail
         debug: true
 
      - slack/notify:
-          custom: |
-            {
-              "blocks": [
-                {
-                  "type": "section",
-                  "fields": [
-                    {
-                      "type": "mrkdwn",
-                      "text": "✅ *Success* #${CIRCLE_BUILD_NUM}"         
-                    }
-                  ]
-                }
-              ]
-            }
-          event: pass
+        template: SLACK_TEMPLATE_PASS
+        event: pass
 
 jobs:
   deploy:
