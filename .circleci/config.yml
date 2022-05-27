@@ -9,7 +9,7 @@ commands:
     steps: 
       - run: 
           command: |
-            # run script to set environment values
+            # run script to set environment values 
             sudo chmod +x generate_vars.sh
             ./generate_vars.sh
           when: always
